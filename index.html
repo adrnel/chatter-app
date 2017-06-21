@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Chatter App</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+        body{
+            background-color: #e0e0e0
+        }
+        h1{
+            margin: 2% 1% 1% 1%;
+        }
+        h3{
+            margin-top: 10px;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+        .top-section{
+            margin: 0 1% 1% 1%;
+        }
+        .chat-section, .user-section{
+            background-color: #fff;
+            display: inline;
+            float: left;
+            border: 1px solid #ccc;
+            padding: 10px;
+            height: 400px;
+            width: 79%;
+        }
+        .chat-section{
+            width: 79%;
+        }
+        .messages-container{
+            overflow: scroll;
+            height: 319px;
+        }
+        .user-section{
+            width: 20%;
+        }
+        .message-section{
+            position: fixed;
+            bottom: 0px;
+            width: 98%;
+            margin: 0 1% 1% 1%;
+        }
+        .message-section input{
+            height: 45px;
+            display: inline;
+            width: 89%;
+        }
+        .message-section button{
+            width: 10%;
+        }
+        ul {
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+<h1>Chatter App</h1>
+<div class="top-section">
+    <div class="chat-section">
+        <h3>Messages</h3>
+        <div class="messages-container" id="messages-container">
+            <ul id="messages"></ul>
+        </div>
+
+    </div>
+    <div class="user-section">
+        <h3>Users</h3>
+        <div class="messages-container" id="users-container">
+            <ul id="users"></ul>
+        </div>
+    </div>
+
+</div>
+<form id="chat-form" action="">
+    <div class="message-section">
+        <input type="text" placeholder="Write your message here..." class="form-control" id="message-box" autocomplete="off" autocapitalize="off">
+
+        <button type="submit" class="btn btn-info btn-lg">
+            <span class="glyphicon glyphicon-envelope"></span> Send
+        </button>
+    </div>
+</form>
+
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    var socket = io();
+$('#chat-form').submit(function(){
+    socket.emit('chat message', $('#message-box').val());
+    $('#message-box').val('');
+    return false;
+});
+    socket.on('chat message', function(msg){
+        $('#messages').append($('<li>').text(msg));
+        var element = document.getElementById("messages-container");
+        element.scrollTop = element.scrollHeight;
+    });
+</script>
+</body>
+</html>
