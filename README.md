@@ -1,6 +1,7 @@
 # chatter-app
 Template for a chat room app using Websockets IO
 
+
 ## Prerequisites
 
 - **Nodejs**
@@ -25,18 +26,16 @@ Template for a chat room app using Websockets IO
  	$ cd climbing-app
  	$ git checkout master
  	```
-
-
-<a name="devproject"></a>
-
+  
+  
 ## Developing for the project
 
 - **Install the node modules**
 
     ```
     $ sudo npm install
-    
-    <a name="buildproject"></a>
+    ```
+
 
 ## Running the project
 - **Node**
