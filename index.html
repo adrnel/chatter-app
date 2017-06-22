@@ -65,6 +65,24 @@
         .error{
             color : red;
         }
+        .form-control.username{
+            display: inline;
+            float: left;
+            width: 20%;
+            margin-right: 10px;
+        }
+        #username-form{
+            margin: 1% 1% 1% 1%;
+        }
+        .username-button{
+            float: left;
+        }
+        .join{
+            color: green;
+        }
+        .leave{
+            color: red;
+        }
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -75,10 +93,10 @@
 <form id="username-form" action="">
     <div>
         <h3>Pick your username</h3>
-        <input type="text" placeholder="Write your message here..." class="form-control" id="username-box" autocomplete="off" autocapitalize="off">
+        <input type="text" placeholder="Username" class="form-control username" id="username-box" autocomplete="off" autocapitalize="off">
     </div>
     <button type="submit" class="btn btn-info btn-lg">
-        <span class="glyphicon glyphicon-envelope"></span>
+        <span class="glyphicon glyphicon-envelope username-button"></span>
     </button>
     <div class="error" id="error"></div>
 </form>
@@ -126,6 +144,16 @@ $('#username-form').submit(function(){
 });
 socket.on('chat message', function(msg){
     $('#messages').append($('<li>').text(msg));
+    var element = document.getElementById("messages-container");
+    element.scrollTop = element.scrollHeight;
+});
+socket.on('join message', function(msg){
+    $('#messages').append($('<li class="join">').text(msg));
+    var element = document.getElementById("messages-container");
+    element.scrollTop = element.scrollHeight;
+});
+socket.on('leave message', function(msg){
+    $('#messages').append($('<li class="leave">').text(msg));
     var element = document.getElementById("messages-container");
     element.scrollTop = element.scrollHeight;
 });

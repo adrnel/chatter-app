@@ -35,12 +35,10 @@ io.on('connection', function(socket){
             });
 
             io.emit('user check response', 3);
-            io.emit('chat message', username+' has joined');
+            io.emit('join message', username+' has joined');
             io.emit('refresh users', users);
         }
     });
-   console.log("clients: ", Object.keys(io.engine.clients));
-
     socket.on('disconnect', function(){
         var index = 0;
         for (var i = 0; i < users.length; i++){
@@ -49,7 +47,7 @@ io.on('connection', function(socket){
             }
         }
         if(index){
-            io.emit('chat message', users[index].name+' has left');
+            io.emit('leave message', users[index].name+' has left');
             users.splice(index, 1);
             io.emit('refresh users', users);
         }
