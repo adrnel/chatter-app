@@ -46,13 +46,13 @@ io.on('connection', function(socket){
         for (var i = 0; i < users.length; i++){
             if (users[i].id === socket.id) {
                 index = i;
-
-
             }
         }
-        io.emit('chat message', users[index].name+' has left');
-        users.splice(index, 1);
-        io.emit('refresh users', users);
+        if(index){
+            io.emit('chat message', users[index].name+' has left');
+            users.splice(index, 1);
+            io.emit('refresh users', users);
+        }
     });
     socket.on('chat message', function(msg){
         io.emit('chat message', msg);
