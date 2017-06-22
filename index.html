@@ -59,40 +59,59 @@
             padding: 0;
             list-style-type: none;
         }
+        .hide{
+            visibility: hidden;
+        }
+        .error{
+            color : red;
+        }
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 </head>
 <body>
-<h1>Chatter App</h1>
-<div class="top-section">
-    <div class="chat-section">
-        <h3>Messages</h3>
-        <div class="messages-container" id="messages-container">
-            <ul id="messages"></ul>
-        </div>
 
+<form id="username-form" action="">
+    <div>
+        <h3>Pick your username</h3>
+        <input type="text" placeholder="Write your message here..." class="form-control" id="username-box" autocomplete="off" autocapitalize="off">
     </div>
-    <div class="user-section">
-        <h3>Users</h3>
-        <div class="messages-container" id="users-container">
-            <ul id="users"></ul>
-        </div>
-    </div>
-
-</div>
-<form id="chat-form" action="">
-    <div class="message-section">
-        <input type="text" placeholder="Write your message here..." class="form-control" id="message-box" autocomplete="off" autocapitalize="off">
-
-        <button type="submit" class="btn btn-info btn-lg">
-            <span class="glyphicon glyphicon-envelope"></span> Send
-        </button>
-    </div>
+    <button type="submit" class="btn btn-info btn-lg">
+        <span class="glyphicon glyphicon-envelope"></span>
+    </button>
+    <div class="error" id="error"></div>
 </form>
 
+<div class="hide" id="chat-app">
+    <h1>Chatter App</h1>
+    <div class="top-section">
+        <div class="chat-section">
+            <h3>Messages</h3>
+            <div class="messages-container" id="messages-container">
+                <ul id="messages"></ul>
+            </div>
 
+        </div>
+        <div class="user-section">
+            <h3>Users</h3>
+            <div class="messages-container" id="users-container">
+                <ul id="users"></ul>
+            </div>
+        </div>
+
+    </div>
+    <form id="chat-form" action="">
+        <div class="message-section">
+            <input type="text" placeholder="Write your message here..." class="form-control" id="message-box" autocomplete="off" autocapitalize="off">
+
+            <button type="submit" class="btn btn-info btn-lg">
+                <span class="glyphicon glyphicon-envelope"></span> Send
+            </button>
+        </div>
+    </form>
+
+</div>
 <script src="/socket.io/socket.io.js"></script>
 <script>
     var socket = io();
@@ -101,11 +120,37 @@ $('#chat-form').submit(function(){
     $('#message-box').val('');
     return false;
 });
-    socket.on('chat message', function(msg){
-        $('#messages').append($('<li>').text(msg));
-        var element = document.getElementById("messages-container");
-        element.scrollTop = element.scrollHeight;
-    });
+$('#username-form').submit(function(){
+    socket.emit('user check request', $('#username-box').val());
+    return false;
+});
+socket.on('chat message', function(msg){
+    $('#messages').append($('<li>').text(msg));
+    var element = document.getElementById("messages-container");
+    element.scrollTop = element.scrollHeight;
+});
+socket.on('refresh users', function(users){
+    $('#users').append($('<li>').empty());
+    for (var i = 0; i < users.length; i++){
+        $('#users').append($('<li>').text(users[i].name));
+    }
+});
+socket.on('user check response', function(code){
+    console.log("error");
+
+    switch(code) {
+        case 1:
+            $("#error").text("Please enter a Username");
+            break;
+        case 2:
+            $("#error").text("Username already exists");
+            break;
+        default:
+             $('#username-form').addClass("hide");
+             $('#chat-app').removeClass("hide");
+    }
+
+});
 </script>
 </body>
 </html>
