@@ -1,7 +1,7 @@
 # chatter-app
 Template for a chat room app using Websockets IO
 
-![Chatter App Image](https://user-images.githubusercontent.com/14028071/27429256-76797dfc-573c-11e7-85d9-1239156b5534.PNG)
+![Chatter App Image](https://user-images.githubusercontent.com/14028071/27507856-a2fdc4c4-58d0-11e7-859e-e1eb3cc7b6b7.PNG)
 
 
 
