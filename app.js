@@ -34,7 +34,7 @@ io.on('connection', function(socket){
             io.emit('user check response', 3);
             io.emit('join message', username+' has joined');
             io.emit('refresh users', users);
-            io.emit('username', username);
+            io.to(socket.id).emit('username', username);
         }
     });
     socket.on('disconnect', function(){

@@ -121,6 +121,7 @@
     </div>
     <form id="chat-form" action="">
         <div class="message-section">
+            <h3 id="username">Username</h3>
             <input type="text" placeholder="Write your message here..." class="form-control" id="message-box" autocomplete="off" autocapitalize="off">
 
             <button type="submit" class="btn btn-info btn-lg">
@@ -162,6 +163,9 @@ socket.on('refresh users', function(users){
     for (var i = 0; i < users.length; i++){
         $('#users').append($('<li>').text(users[i].name));
     }
+});socket.on('username', function(username){
+    console.log("Username recieved, username")
+    $('#username').text(username);
 });
 socket.on('user check response', function(code){
     switch(code) {
