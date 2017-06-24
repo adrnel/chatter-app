@@ -14,16 +14,13 @@ app.get('/', function (req, res) {
 
 io.on('connection', function(socket){
     socket.on('user check request', function(username){
-        console.log("ID of person joined: ", socket.id);
         var isError = false;
         if (!username){
             io.emit('user check response', 1);
             isError = true;
         }
-        console.log(username);
         for (var i = 0; i < users.length; i++){
             if (users[i].name === username) {
-                console.log("users[i].name", users[i].name);
                 io.emit('user check response', 2);
                 isError = true;
             }
@@ -37,6 +34,7 @@ io.on('connection', function(socket){
             io.emit('user check response', 3);
             io.emit('join message', username+' has joined');
             io.emit('refresh users', users);
+            io.emit('username', username);
         }
     });
     socket.on('disconnect', function(){
@@ -53,6 +51,12 @@ io.on('connection', function(socket){
         }
     });
     socket.on('chat message', function(msg){
-        io.emit('chat message', msg);
+        var index = 0;
+        for (var i = 0; i < users.length; i++){
+            if (users[i].id === socket.id) {
+                index = i;
+            }
+        }
+        io.emit('chat message', [users[index].name, msg]);
     });
 });

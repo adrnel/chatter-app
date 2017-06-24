@@ -143,7 +143,7 @@ $('#username-form').submit(function(){
     return false;
 });
 socket.on('chat message', function(msg){
-    $('#messages').append($('<li>').text(msg));
+    $('#messages').append($('<li>').text(msg[0]+": "+msg[1]));
     var element = document.getElementById("messages-container");
     element.scrollTop = element.scrollHeight;
 });
@@ -164,8 +164,6 @@ socket.on('refresh users', function(users){
     }
 });
 socket.on('user check response', function(code){
-    console.log("error");
-
     switch(code) {
         case 1:
             $("#error").text("Please enter a Username");
@@ -177,7 +175,6 @@ socket.on('user check response', function(code){
              $('#username-form').addClass("hide");
              $('#chat-app').removeClass("hide");
     }
-
 });
 </script>
 </body>
